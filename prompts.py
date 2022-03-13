@@ -6,6 +6,9 @@ from pprint import pprint
 class Prompt(ABC):
     """Interface defining Prompt actions"""
 
+    def __init__(self):
+        self.url = 'https://redwilliams.dev/api/projects/'
+
     @abstractclassmethod
     def prompt(self):
         """Prompts the user the necessary questions
@@ -37,9 +40,8 @@ class Read(Prompt):
         raise Exception("Method not needed for reading databse")
 
     def execute(self):
-        r = requests.get(base_url + self.path) # FIXME broken variable
+        r = requests.get(self.url)
         pprint(r.json()['projects'])
-        
         
 class Add(Prompt):
 
@@ -62,12 +64,23 @@ class Add(Prompt):
                 'type': 'input',
                 'name': 'techs',
                 'message': 'Technologies used: (comma-separated)',
-                'filter': lambda x: [i.strip() for i in x.split(',')] 
+                'filter': lambda list: [i.strip() for i in list.split(',')] 
             },
             {
                 'type': 'input',
                 'name': 'github_link',
-                'message': 'Github link: ' 
+                'message': 'Github link:' 
+            },
+            {
+                'type': 'input',
+                'name': 'project_link',
+                'message': 'Project link:'
+            },
+            {
+                'type': 'confirm',
+                'name': 'featured',
+                'message': 'Is this a featured project? (y/n)',
+                'default': False
             }
         ]
 
@@ -76,6 +89,20 @@ class Add(Prompt):
     def confirm(self):
         print('Update the database with the following data?')
         pprint(self.input), 
+
+    def execute(self):
+        pass
+
+class Update(Prompt):
+    
+    def __init__(self):
+        pass
+
+    def prompt(self):
+        pass
+
+    def confirm(self):
+        pass
 
     def execute(self):
         pass

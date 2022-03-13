@@ -1,6 +1,6 @@
 from __future__ import print_function, unicode_literals
 from PyInquirer import prompt
-from prompts import Read, Add
+from prompts import Read, Add, Update
 
 input = [
     {
@@ -9,11 +9,11 @@ input = [
         'message': 'What would you like to do?',
         # TODO: 'default': [index]
         'choices': [
-            'View the database',
-            'Add a project',
-            'Edit a project',
-            'Remove a project',
-            'Exit'
+            {'name':'View the database', 'value': 'v'},
+            {'name':'Add a project', 'value': 'a'},
+            {'name':'Update a project', 'value': 'u'},
+            {'name':'Remove a project', 'value': 'r'},
+            {'name':'Exit', 'value': 'a'}
         ]
     }
 ]
@@ -21,21 +21,25 @@ input = [
 choice = prompt(input)
 print(choice)
 
-if 'View' in choice['action']:
-    p = Read("/api/projects")
+if choice['action'] == 'v':
+    p = Read()
     p.execute()
-    # pass
 
-elif 'Add' in choice['action']:
+elif choice['action'] == 'a':
     p = Add()
     p.prompt()
     p.confirm()
-elif 'Edit' in  choice['action']:
+
+elif choice['action'] == 'u':
+    p = Update()
+    p.prompt()
+    p.confirm()
+    
+elif choice['action'] == 'r':
     pass
-elif 'Remove' in choice['action']:
-    pass
-elif 'Exit' in choice['action']:
+elif choice['action'] == 'e':
     sys.exit(0)
 else:
     raise Exception("An error occured while parsing that selection")
+    sys.exit(1)
     
