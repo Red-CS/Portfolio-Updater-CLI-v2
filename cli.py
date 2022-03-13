@@ -1,6 +1,7 @@
 from __future__ import print_function, unicode_literals
 from PyInquirer import prompt
 from prompts import Read, Add, Update
+from pprint import pprint
 
 input = [
     {
@@ -23,7 +24,8 @@ print(choice)
 
 if choice['action'] == 'v':
     p = Read()
-    p.execute()
+    response = p.execute()
+    pprint(response)
 
 elif choice['action'] == 'a':
     p = Add()
