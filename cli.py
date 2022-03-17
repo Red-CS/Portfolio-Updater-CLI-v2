@@ -1,7 +1,8 @@
 from __future__ import print_function, unicode_literals
 from PyInquirer import prompt
-from prompts import Read, Add, Update
-from pprint import pprint
+from prompts import View, Add, Update
+from rich.pretty import pprint as print
+
 
 input = [
     {
@@ -14,28 +15,29 @@ input = [
             {'name':'Add a project', 'value': 'a'},
             {'name':'Update a project', 'value': 'u'},
             {'name':'Remove a project', 'value': 'r'},
-            {'name':'Exit', 'value': 'a'}
+            {'name':'Exit', 'value': 'e'}
         ]
     }
 ]
 
 choice = prompt(input)
-print(choice)
 
 if choice['action'] == 'v':
-    p = Read()
+    p = View()
     response = p.execute()
-    pprint(response)
+    print(response, expand_all=True)
 
 elif choice['action'] == 'a':
     p = Add()
     p.prompt()
     p.confirm()
+    # TODO
 
 elif choice['action'] == 'u':
     p = Update()
     p.prompt()
     p.confirm()
+    # TODO
     
 elif choice['action'] == 'r':
     pass

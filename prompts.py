@@ -1,9 +1,8 @@
 from abc import ABC, abstractclassmethod
 from PyInquirer import prompt
 import requests
-from pprint import pprint
-
-
+from rich.pretty import pprint as print
+import sys
 class Prompt(ABC):
     """Interface defining Prompt actions"""
 
@@ -32,13 +31,13 @@ class Prompt(ABC):
         pass
 
 
-class Read(Prompt): # TODO clarify naming between files: Read or View
+class View(Prompt):
 
     def prompt(self):
         raise Exception("Method not needed for reading database")
 
     def confirm(self):
-        raise Exception("Method not needed for reading databse")
+        raise Exception("Method not needed for reading database")
 
     def execute(self):
         r = requests.get(self.url)
@@ -82,7 +81,7 @@ class Add(Prompt):
             {
                 'type': 'confirm',
                 'name': 'featured',
-                'message': 'Is this a featured project? (y/n)',
+                'message': 'Is this a featured project?',
                 'default': False
             }
         ]
@@ -90,8 +89,21 @@ class Add(Prompt):
         self.input = prompt(input)
 
     def confirm(self):
-        print('Update the database with the following data?')
-        pprint(self.input)
+
+        print(self.input, expand_all=True)
+
+        input = [
+            {
+                'type': 'confirm',
+                'name': 'confirm',
+                'message': 'Add this project to the database?'
+            }
+        ]
+
+        response = prompt(input)
+        
+        if not response['confirm']:
+            sys.exit(0)
 
     def execute(self):
         pass
@@ -118,7 +130,11 @@ class Update(Prompt):
         self.input = prompt(input)
 
     def confirm(self):
-        pass
+        input = [
+            {
+                'type': ''
+            }
+        ]
 
     def execute(self):
         pass
